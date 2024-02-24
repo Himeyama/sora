@@ -1,3 +1,14 @@
 #!/usr/bin/env ruby
 
-require "sora"
+require 'sora'
+require 'optparse'
+
+opt = OptionParser.new
+
+params = {:port => 8080}
+
+opt.on('-p [PORT]', '--port [PORT]') {|v| params[:port] = v.to_i }
+
+opt.parse!(ARGV)
+
+Sora.server(**params)
