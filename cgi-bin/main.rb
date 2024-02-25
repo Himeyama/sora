@@ -96,11 +96,7 @@ def remove_file(params)
 
   file_path = File.join(File.expand_path("../data"), response[:filename])
 
-  if File.exist?(file_path)
-    if File.delete(file_path)
-      response[:status] = "OK"
-    end
-  end
+  response[:status] = "OK" if File.exist?(file_path) && File.delete(file_path)
 
   print JSON.pretty_generate(response)
 end
