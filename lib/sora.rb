@@ -18,10 +18,10 @@ module Sora
         CGIInterpreter: RbConfig.ruby
       }
     )
-    srv.mount("/cgi-bin", WEBrick::HTTPServlet::CGIHandler, "#{Dir.pwd}/cgi-bin/main.rb")
-    srv.mount("/", WEBrick::HTTPServlet::FileHandler, "www/index.html")
-    srv.mount("/style", WEBrick::HTTPServlet::FileHandler, "www/style.css")
-    srv.mount("/js", WEBrick::HTTPServlet::FileHandler, "www/main.js")
+    srv.mount("/cgi-bin", WEBrick::HTTPServlet::CGIHandler, "#{document_root}/../cgi-bin/main.rb")
+    srv.mount("/", WEBrick::HTTPServlet::FileHandler, "#{document_root}/index.html")
+    srv.mount("/style", WEBrick::HTTPServlet::FileHandler, "#{document_root}/style.css")
+    srv.mount("/js", WEBrick::HTTPServlet::FileHandler, "#{document_root}/main.js")
     trap("INT") { srv.shutdown }
     srv.start
   end
