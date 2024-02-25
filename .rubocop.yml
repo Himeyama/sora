@@ -17,3 +17,6 @@ Layout/EndOfLine:
 
 Metrics/MethodLength:
   Enabled: False
+
+Metrics/AbcSize:
+  Enabled: False
