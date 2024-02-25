@@ -12,6 +12,7 @@ function EncodeHTMLForm(data) {
 const content = document.getElementById("content");
 const sendButton = document.getElementById("send-button");
 const rightClickDelete = document.getElementById("right-click-delete");
+const rightClickCopy = document.getElementById("right-click-copy");
 let rightClickTargetId = "";
 let data = [];
 
@@ -45,11 +46,20 @@ const send = (write) => {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "/cgi-bin");
     write ? xhr.send(EncodeHTMLForm({ "data": content.value })) : xhr.send(EncodeHTMLForm({ "data": "" }));
+    if(write && content.value != ""){
+        const dataList = document.getElementById("data-list");
+        const div = document.createElement("div");
+        div.innerText = content.value;
+        div.className = "message";
+        dataList.prepend(div);
+    }
     xhr.onreadystatechange = () => {
         let texts = JSON.parse(xhr.responseText || "null");
         if(texts == null) return;
         data = texts;
         refresh();
+        sendButton.disabled = false;
+        sendButton.classList.remove("disabled")
     }
 }
 
@@ -59,8 +69,15 @@ const i18n = () => {
         content.placeholder = "テキストを入力...";
         sendButton.value = "送信";
         rightClickDelete.innerText = "削除"
+        rightClickCopy.innerText = "コピー"
     }
 }
+
+rightClickCopy.addEventListener('click', () => {
+    const targetDOM = document.getElementById(rightClickTargetId);
+    navigator.clipboard.writeText(targetDOM.textContent);
+    contextmenu.style.display = 'none';
+});
 
 rightClickDelete.addEventListener('click', () => {
     const targetDOM = document.getElementById(rightClickTargetId);
@@ -79,6 +96,16 @@ rightClickDelete.addEventListener('click', () => {
     contextmenu.style.display = 'none';
 });
 
+document.body.addEventListener('click', () => {
+    contextmenu.style.display = 'none';
+});
+
 i18n();
 send(false);
-sendButton.addEventListener("click", () => { send(true) });
+sendButton.addEventListener("click", () => {
+    if(content.value != ""){
+        sendButton.disabled = true;
+        sendButton.classList.add("disabled")
+        send(true)
+    }    
+});

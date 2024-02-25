@@ -1,33 +1,46 @@
-body{
-    background-color: #F3F3F3;
-    font-family: Segoe UI, Meiryo UI;
+html {
+    height: 100%;
 }
 
-main{
+body {
+    background-color: #F3F3F3;
+    font-family: Segoe UI, Meiryo UI;
+    min-height: 100%;
+}
+
+main {
     max-width: 980px;
     margin: 0 auto;
 }
 
-.Grid{
+.Grid {
     display: grid;
 }
 
-.Text-SendButton{
+.Text-SendButton {
     grid-template-columns: 1fr auto;
     margin-bottom: 8px;
 }
 
-.Text-SendButton .TextBox{
+.Text-SendButton .TextBox {
     margin-right: 8px;
 }
 
-.message{
+.message {
     margin-bottom: 8px;
     padding: 16px;
     border: solid 1px #E5E5E5;
     background-color: #F4F4F4;
     border-radius: 4px;
     font-size: 14px;
+}
+
+#contextmenu ul li {
+    margin-top: 4px;
+}
+
+#contextmenu ul li.menu-top {
+    margin-top: 0;
 }
 
 /* 右クリックメニュー */
@@ -43,7 +56,7 @@ main{
     width: 192px;
 }
 
-#contextmenu ul{
+#contextmenu ul {
     padding-left: 0;
     margin: 0;
 }
@@ -63,7 +76,7 @@ main{
 }
 
 /* 共通コンポーネント */
-.TextBox{
+.TextBox {
     height: 27px;
     border: solid 1px #E5E5E5;
     border-bottom-color: #868686;
@@ -73,11 +86,11 @@ main{
     background-color: #FBFBFB;
 }
 
-.TextBox:hover{
+.TextBox:hover {
     background-color: #F6F6F6;
 }
 
-.TextBox:focus{
+.TextBox:focus {
     background-color: white;
     height: 27px;
     border-bottom-color: #0067C0;
@@ -86,7 +99,8 @@ main{
     padding-bottom: 1px;
 }
 
-.Button{
+.Button {
+    cursor: pointer;
     height: 32px;
     border: solid 1px #E5E5E5;
     border-bottom-color: #CCCCCC;
@@ -95,32 +109,40 @@ main{
     padding: 1px 12px;
 }
 
-.Button:hover{
+.Button:hover {
     background-color: #F6F6F6;
 }
 
-.Button:active{
+.Button:active {
     background-color: #F5F5F5;
     color: #5D5D5D;
     border-color: #E5E5E5;
 }
 
-.Button.Accent{
+.Button.Accent {
     background-color: #0067C0;
     border: solid 1px #1473C5;
     border-bottom-color: #003E73;
     color: white;
 }
 
-.Button.Accent:hover{
+.Button.Accent:hover {
     background-color: #1975C5;
     border: solid 1px #2B80CA;
     border-bottom-color: #0F4676;
 }
 
-.Button.Accent:active{
+.Button.Accent:active {
     background-color: #3183CA;
     border: solid 1px #3183CA;
     border-bottom-color: #3183CA;
     color: #C2DAEF;
+}
+
+.Button.disabled, .Button.disabled:hover {
+    cursor: not-allowed;
+    background-color: #F5F5F5 !important;
+    color: #9D9D9D;
+    border: solid 1px #E5E5E5 !important;
+    border-bottom-color: #E5E5E5 !important;
 }
