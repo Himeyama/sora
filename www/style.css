@@ -6,6 +6,7 @@ body {
     background-color: #F3F3F3;
     font-family: Segoe UI, Meiryo UI;
     min-height: 100%;
+    margin: 0;
 }
 
 main {
@@ -13,16 +14,25 @@ main {
     margin: 0 auto;
 }
 
+#wrap {
+    margin: 0 16px;
+    padding-top: 8px;
+}
+
 .Grid {
     display: grid;
 }
 
 .Text-SendButton {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
     margin-bottom: 8px;
 }
 
 .Text-SendButton .TextBox {
+    margin-right: 8px;
+}
+
+#send-button{
     margin-right: 8px;
 }
 
@@ -43,8 +53,41 @@ main {
     margin-top: 0;
 }
 
+/* ファイルリスト */
+#file-list{
+    background-color: #F9F9F9;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: solid 1px #E3E3E3;
+    border-radius: 8px;
+    display: none;
+}
+
+#file-list-ul{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    user-select: none;
+}
+
+#file-list-ul li{
+    border-radius: 4px;
+    padding: 4.75px 12px 4.75px 12px;
+    cursor: pointer;
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+#file-list-ul li:nth-child(1){
+    margin-top: 0;
+}
+
+#file-list-ul li:hover{
+    background-color: #F0F0F0;
+}
+
 /* 右クリックメニュー */
-#contextmenu {
+.contextmenu {
     display: none;
     position: fixed;
     left: 0;
@@ -56,12 +99,12 @@ main {
     width: 192px;
 }
 
-#contextmenu ul {
+.contextmenu ul {
     padding-left: 0;
     margin: 0;
 }
 
-#contextmenu li {
+.contextmenu li {
     cursor: pointer;
     margin: 0;
     padding: 4.75px 0 4.75px 16px;
@@ -71,11 +114,15 @@ main {
     user-select: none;
 }
 
-#contextmenu li:hover {
+.contextmenu li:hover {
     background-color: #F0F0F0;
 }
 
 /* 共通コンポーネント */
+.Hidden {
+    display: none;
+}
+
 .TextBox {
     height: 27px;
     border: solid 1px #E5E5E5;

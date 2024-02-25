@@ -11,8 +11,18 @@ function EncodeHTMLForm(data) {
 
 const content = document.getElementById("content");
 const sendButton = document.getElementById("send-button");
+const selectFileButton = document.getElementById("select-file-button");
+const selectFileButtonPre = document.getElementById("select-file-button-pre");
 const rightClickDelete = document.getElementById("right-click-delete");
+const rightClickDeleteFile = document.getElementById("right-click-delete-file");
 const rightClickCopy = document.getElementById("right-click-copy");
+const rightClickDownloadFile = document.getElementById("right-click-download-file");
+const contextmenuFile = document.getElementById('contextmenu-file');
+const fileListWrap = document.getElementById('file-list-wrap');
+const dataListWrap = document.getElementById('data-list-wrap');
+const fileListTitle = document.getElementById('file-list-title');
+const dataListTitle = document.getElementById('data-list-title');
+
 let rightClickTargetId = "";
 let data = [];
 
@@ -20,6 +30,7 @@ const refresh = () => {
     if(data == null) return;
     const dataList = document.getElementById("data-list");
     dataList.innerHTML = "";
+    dataListWrap.style.display = data.length == 0 ? "none" : "block";
     for(const text of data){
         const div = document.createElement("div");
         div.innerText = text['content'];
@@ -65,11 +76,16 @@ const send = (write) => {
 
 const i18n = () => {
     const lang = window.navigator.language;
-    if(lang == 'ja'){
+    if(lang == 'ja' || lang == 'ja-JP'){
         content.placeholder = "テキストを入力...";
         sendButton.value = "送信";
-        rightClickDelete.innerText = "削除"
-        rightClickCopy.innerText = "コピー"
+        rightClickDelete.innerText = "削除";
+        rightClickDeleteFile.innerText = "削除";
+        rightClickDownloadFile.innerText = "ダウンロード";
+        rightClickCopy.innerText = "コピー";
+        selectFileButton.value = "ファイルを選択";
+        fileListTitle.innerText = "ファイル一覧";
+        dataListTitle.innerText = "テキスト一覧";
     }
 }
 
@@ -98,10 +114,9 @@ rightClickDelete.addEventListener('click', () => {
 
 document.body.addEventListener('click', () => {
     contextmenu.style.display = 'none';
+    contextmenuFile.style.display = 'none';
 });
 
-i18n();
-send(false);
 sendButton.addEventListener("click", () => {
     if(content.value != ""){
         sendButton.disabled = true;
@@ -109,3 +124,66 @@ sendButton.addEventListener("click", () => {
         send(true)
     }    
 });
+
+selectFileButton.addEventListener('click', () => {
+    selectFileButtonPre.click();
+});
+
+selectFileButtonPre.addEventListener('change', (e) => {
+    const form = document.getElementById("upload-form");
+    const formData = new FormData(form);
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/cgi-bin");
+    xhr.upload.addEventListener('loadstart', () => {
+        console.log("Upload: start")
+    });
+
+    xhr.upload.addEventListener('load', () => {
+        // アップロード正常終了
+        console.log('Upload: done');
+        getFiles();
+    });
+
+    xhr.send(formData);
+});
+
+const getFiles = () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/cgi-bin");
+    xhr.send(EncodeHTMLForm({ "files": "" }));
+    xhr.onreadystatechange = () => {
+        let texts = JSON.parse(xhr.responseText || "null");
+        if (texts == null)
+            return;
+
+        const fileListUl = document.getElementById('file-list-ul');
+        fileListUl.innerHTML = "";
+
+        const fileList = document.getElementById('file-list');
+        fileList.style.display = texts.length == 0 ? "none" : "block";
+        fileListWrap.style.display = texts.length == 0 ? "none" : "block";
+
+        for(const fileName of texts){
+            const div = document.createElement('li');
+            div.textContent = fileName;
+            
+            div.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                contextmenuFile.style.left = e.pageX + 'px';
+                contextmenuFile.style.top = e.pageY + 'px';
+                contextmenuFile.style.display = 'block';
+                rightClickTargetId = e.target.id
+            });
+            div.addEventListener('click', () => {
+                contextmenuFile.style.display = 'none';
+            });
+
+            fileListUl.append(div);
+        }
+    };
+};
+
+i18n();
+send(false);
+getFiles();

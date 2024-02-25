@@ -8,7 +8,7 @@ opt = OptionParser.new
 
 params = { port: 8080, document_root: File.expand_path("../www", __dir__) }
 
-opt.on("-p [PORT]", "--port [PORT]") { |v| params[:port] = v.to_i }
+opt.on("-p [PORT]", "--port [PORT]", "Port number, default: 8080") { |v| params[:port] = v.to_i }
 
 opt.parse!(ARGV)
 

@@ -7,7 +7,14 @@ require "securerandom"
 cgi = CGI.new
 print cgi.header("application/json")
 params = cgi.params
+
 @json_file_path = "../data/data.json"
+
+def log(text)
+  open("tmp", "a") do |f|
+    f.puts(text)
+  end
+end
 
 def read_json(filename)
   unless File.exist? filename
@@ -57,5 +64,33 @@ def delete(params)
   print JSON.pretty_generate(response)
 end
 
+def save_file(params)
+  return unless params.key?("file")
+
+  file = params["file"][0]
+  response = {
+    filename: file.original_filename
+  }
+
+  file_path = File.join(File.expand_path("../data"), response[:filename])
+
+  File.open(file_path, "wb") do |f|
+    f.write file.read
+  end
+
+  print JSON.pretty_generate(response)
+end
+
+def get_files(params)
+  return unless params.key?("files")
+
+  response = Dir.glob(File.join(File.expand_path("../data"), "*"))
+  response.map! { |e| File.basename(e) }
+  response.filter! { |e| !["data.json", ".gitignore"].include?(e) }
+  print JSON.pretty_generate(response)
+end
+
 get_json(params)
 delete(params)
+save_file(params)
+get_files(params)
