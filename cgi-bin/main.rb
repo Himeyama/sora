@@ -72,10 +72,34 @@ def save_file(params)
     filename: file.original_filename
   }
 
+  return if [".gitignore", "data.json"].include?(response[:filename])
+
   file_path = File.join(File.expand_path("../data"), response[:filename])
 
   File.open(file_path, "wb") do |f|
     f.write file.read
+  end
+
+  print JSON.pretty_generate(response)
+end
+
+def remove_file(params)
+  return unless params.key?("removefile")
+
+  removefile = params["removefile"][0]
+  response = {
+    filename: removefile,
+    status: "NG"
+  }
+
+  return if [".gitignore", "data.json"].include?(response[:filename])
+
+  file_path = File.join(File.expand_path("../data"), response[:filename])
+
+  if File.exist?(file_path)
+    if File.delete(file_path)
+      response[:status] = "OK"
+    end
   end
 
   print JSON.pretty_generate(response)
@@ -94,3 +118,4 @@ get_json(params)
 delete(params)
 save_file(params)
 get_files(params)
+remove_file(params)

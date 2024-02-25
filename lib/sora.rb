@@ -19,6 +19,7 @@ module Sora
       }
     )
     srv.mount("/cgi-bin", WEBrick::HTTPServlet::CGIHandler, "#{document_root}/../cgi-bin/main.rb")
+    srv.mount("/get", WEBrick::HTTPServlet::CGIHandler, "#{document_root}/../cgi-bin/get.rb")
     srv.mount("/", WEBrick::HTTPServlet::FileHandler, "#{document_root}/index.html")
     srv.mount("/style", WEBrick::HTTPServlet::FileHandler, "#{document_root}/style.css")
     srv.mount("/js", WEBrick::HTTPServlet::FileHandler, "#{document_root}/main.js")

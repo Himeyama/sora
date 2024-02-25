@@ -24,6 +24,7 @@ const fileListTitle = document.getElementById('file-list-title');
 const dataListTitle = document.getElementById('data-list-title');
 
 let rightClickTargetId = "";
+let fileTarget;
 let data = [];
 
 const refresh = () => {
@@ -39,15 +40,14 @@ const refresh = () => {
         dataList.prepend(div);
 
         const contextmenu = document.getElementById('contextmenu');
-        const main = div;
-        main.addEventListener('contextmenu', (e) => {
+        div.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             contextmenu.style.left = e.pageX + 'px';
             contextmenu.style.top = e.pageY + 'px';
             contextmenu.style.display = 'block';
             rightClickTargetId = e.target.id
         });
-        main.addEventListener('click', () => {
+        div.addEventListener('click', () => {
             contextmenu.style.display = 'none';
         });
     }
@@ -173,16 +173,28 @@ const getFiles = () => {
                 contextmenuFile.style.left = e.pageX + 'px';
                 contextmenuFile.style.top = e.pageY + 'px';
                 contextmenuFile.style.display = 'block';
-                rightClickTargetId = e.target.id
+                fileTarget = e.target;
             });
             div.addEventListener('click', () => {
                 contextmenuFile.style.display = 'none';
+                location.href = `/get?filename=${fileName}`
             });
 
             fileListUl.append(div);
         }
     };
 };
+
+rightClickDeleteFile.addEventListener("click", () => {
+    const fileName = fileTarget.textContent;
+    fileTarget.remove();
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/cgi-bin");
+    xhr.send(EncodeHTMLForm({ "removefile": fileName }));
+    xhr.onreadystatechange = () => {
+        getFiles();
+    };
+})
 
 i18n();
 send(false);
