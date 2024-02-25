@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require 'sora'
-require 'optparse'
+require "sora"
+require "optparse"
 
 opt = OptionParser.new
 
-params = {:port => 8080}
+params = { port: 8080 }
 
-opt.on('-p [PORT]', '--port [PORT]') {|v| params[:port] = v.to_i }
+opt.on("-p [PORT]", "--port [PORT]") { |v| params[:port] = v.to_i }
 
 opt.parse!(ARGV)
 

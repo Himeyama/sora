@@ -1,0 +1,126 @@
+body{
+    background-color: #F3F3F3;
+    font-family: Segoe UI, Meiryo UI;
+}
+
+main{
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.Grid{
+    display: grid;
+}
+
+.Text-SendButton{
+    grid-template-columns: 1fr auto;
+    margin-bottom: 8px;
+}
+
+.Text-SendButton .TextBox{
+    margin-right: 8px;
+}
+
+.message{
+    margin-bottom: 8px;
+    padding: 16px;
+    border: solid 1px #E5E5E5;
+    background-color: #F4F4F4;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* 右クリックメニュー */
+#contextmenu {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-radius: 8px;
+    background-color: #F9F9F9;
+    border: solid 1px #E3E3E3;
+    padding: 4px;
+    width: 192px;
+}
+
+#contextmenu ul{
+    padding-left: 0;
+    margin: 0;
+}
+
+#contextmenu li {
+    cursor: pointer;
+    margin: 0;
+    padding: 4.75px 0 4.75px 16px;
+    border-radius: 4px;
+    list-style: none;
+    font-size: 14px;
+    user-select: none;
+}
+
+#contextmenu li:hover {
+    background-color: #F0F0F0;
+}
+
+/* 共通コンポーネント */
+.TextBox{
+    height: 27px;
+    border: solid 1px #E5E5E5;
+    border-bottom-color: #868686;
+    border-radius: 4px;
+    padding-left: 11px;
+    padding-bottom: 2px;
+    background-color: #FBFBFB;
+}
+
+.TextBox:hover{
+    background-color: #F6F6F6;
+}
+
+.TextBox:focus{
+    background-color: white;
+    height: 27px;
+    border-bottom-color: #0067C0;
+    border-bottom-width: 2px;
+    outline: none;
+    padding-bottom: 1px;
+}
+
+.Button{
+    height: 32px;
+    border: solid 1px #E5E5E5;
+    border-bottom-color: #CCCCCC;
+    background-color: white;
+    border-radius: 4px;
+    padding: 1px 12px;
+}
+
+.Button:hover{
+    background-color: #F6F6F6;
+}
+
+.Button:active{
+    background-color: #F5F5F5;
+    color: #5D5D5D;
+    border-color: #E5E5E5;
+}
+
+.Button.Accent{
+    background-color: #0067C0;
+    border: solid 1px #1473C5;
+    border-bottom-color: #003E73;
+    color: white;
+}
+
+.Button.Accent:hover{
+    background-color: #1975C5;
+    border: solid 1px #2B80CA;
+    border-bottom-color: #0F4676;
+}
+
+.Button.Accent:active{
+    background-color: #3183CA;
+    border: solid 1px #3183CA;
+    border-bottom-color: #3183CA;
+    color: #C2DAEF;
+}
