@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    sora (0.1.0)
+    sora (24.02.25)
+      webrick (~> 1.8)
 
 GEM
   remote: https://rubygems.org/
@@ -42,7 +43,6 @@ DEPENDENCIES
   rake (~> 13.0)
   rubocop (~> 1.21)
   sora!
-  webrick (~> 1.8)
 
 BUNDLED WITH
    2.4.19
