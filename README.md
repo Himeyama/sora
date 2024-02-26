@@ -27,10 +27,10 @@ rake install # Install from repository
 ## About sora
 Sola sets up a server on the installed machine. Strings and files can be shared by accessing that machine from smartphones or other machines in the LAN.
 
-The following command will bring up the sora server on port 8001.
+The following command will bring up the sora server on port 8080.
 
 ```ps1
-sora -p 8001
+sora -p 8080 # or: sora
 ```
 
 Next, let's access sora with a browser.
