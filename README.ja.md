@@ -2,6 +2,8 @@
 [![Ruby](https://github.com/Himeyama/sora/actions/workflows/main.yml/badge.svg)](https://github.com/Himeyama/sora/actions/workflows/main.yml)
 [![Gem Version](https://badge.fury.io/rb/sora.svg)](https://badge.fury.io/rb/sora)
 
+> ![sora](docs/screenshot.png)
+
 sora は文字列やファイルを送受信できる Ruby 製 http サーバです。
 
 sora (Server Of Ruby for Access) は、ファイルの送受信や、文字列を送信して情報を伝達することができます。

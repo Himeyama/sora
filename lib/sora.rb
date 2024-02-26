@@ -15,7 +15,8 @@ module Sora
         DocumentRoot: document_root,
         BindAddress: "0.0.0.0",
         Port: port,
-        CGIInterpreter: RbConfig.ruby
+        CGIInterpreter: RbConfig.ruby,
+        DoNotReverseLookup: true
       }
     )
     srv.mount("/cgi-bin", WEBrick::HTTPServlet::CGIHandler, "#{document_root}/../cgi-bin/main.rb")
