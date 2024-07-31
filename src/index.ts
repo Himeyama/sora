@@ -1,5 +1,5 @@
 require('./style.css')
-import { fluentListbox, fluentOption, fluentButton, fluentCard, fluentTextField, fluentSwitch, provideFluentDesignSystem } from '@fluentui/web-components'
+import { fluentListbox, fluentOption, fluentButton, fluentCard, fluentTextField, fluentSwitch, provideFluentDesignSystem, Listbox, TextArea, Button } from '@fluentui/web-components'
 import i18next from 'i18next'
 
 provideFluentDesignSystem()
@@ -31,7 +31,10 @@ i18next.init({
                 "title-sora": "sora",
                 "input-text": "Input text...",
                 "select-file": "Select a file...",
-                "send-data": "Send"
+                "send-data": "Send",
+                "remove-file": "Remove a file",
+                "remove-text": "Remove a text",
+                "copy-text": "Copy a text"
             }
         },
         ja: {
@@ -39,7 +42,10 @@ i18next.init({
                 "title-sora": "ソラ",
                 "input-text": "テキストを入力...",
                 "select-file": "ファイルの選択",
-                "send-data": "送信"
+                "send-data": "送信",
+                "remove-file": "ファイルの削除",
+                "remove-text": "テキストの削除",
+                "copy-text": "テキストのコピー"
             }
         }
     }
@@ -48,6 +54,9 @@ i18next.init({
     setAttribute("input-text")
     setText("select-file")
     setText("send-data")
+    setText("remove-file")
+    setText("remove-text")
+    setText("copy-text")
 })
 
 // 与えられたオブジェクトのキーと値をエンコードして、HTMLフォームのクエリ文字列として連結
@@ -132,11 +141,11 @@ const removeChild = (element: HTMLElement) => {
 }
 
 // リストを更新
-const showList = (data: any) => {
+const showList = (data: any, files: string[]) => {
     const contents = document.getElementById("contents")
     removeChild(contents)
 
-    // レスポンスを処理するコードをここに記述
+    // テキスト一覧を追加
     for (const content of data) {
         const text = content.content
         const uuid = content.uuid
@@ -144,23 +153,57 @@ const showList = (data: any) => {
         const fluentOpt = document.createElement("fluent-option")
         fluentOpt.textContent = text
         fluentOpt.setAttribute("value", uuid)
+        fluentOpt.setAttribute("type", "text")
 
         fluentOpt.addEventListener("click", () => {
             const items = document.getElementById("items")
             items.classList.add("visible")
+            items.classList.remove("type-file")
+            items.classList.add("type-text")
+
+            const textData = document.getElementById("text-title")
+            textData.textContent = fluentOpt.textContent
+
+            const textContent = document.getElementById("text-content")
+            textContent.textContent = fluentOpt.textContent
         })
 
         contents.appendChild(fluentOpt)
     }
+
+    // ファイル一覧を追加
+    for (const text of files){
+        const fluentOpt = document.createElement("fluent-option")
+        fluentOpt.textContent = text
+        fluentOpt.setAttribute("type", "file")
+
+        fluentOpt.addEventListener("click", () => {
+            const items = document.getElementById("items")
+            items.classList.add("visible")
+            items.classList.add("type-file")
+            items.classList.remove("type-text")
+        })
+        contents.appendChild(fluentOpt)
+    }
 }
 
-// 一覧を表示
-fetch('/cgi-bin?data=')
-    .then((response) => response.json())
-    .then((data) => {
-        showList(data)
-    }
-)
+const refresh = () => {
+    // 一覧を表示
+    fetch('/cgi-bin?data=')
+        .then((response) => response.json())
+        .then((data) => {
+            // showList(data)
+            fetch('/cgi-bin?files')
+                .then((response) => response.json())
+                .then((files) => {
+                    showList(data, files)
+                }
+            )
+        }
+    )
+}
+
+refresh()
 
 // データ送信
 document.getElementById("send-data").addEventListener("click", () => {
@@ -168,7 +211,52 @@ document.getElementById("send-data").addEventListener("click", () => {
     fetch('/cgi-bin?data=' + encodeURI(text))
         .then((response) => response.json())
         .then((data) => {
-            showList(data)
+            // showList(data)
+            fetch('/cgi-bin?files')
+                .then((response) => response.json())
+                .then((files) => {
+                    showList(data, files)
+                }
+            )
         }
     )
+})
+
+/* テキストのコピーがクリックされたとき */
+const copyText = document.getElementById("copy-text") as Button
+copyText.addEventListener("click", () => {
+    const contents = document.getElementById("contents") as Listbox
+    if(contents.selectedIndex != -1){
+        // console.log(contents)
+        const selected = contents.selectedOptions[0]
+        selected.textContent
+
+        const textarea: HTMLTextAreaElement = document.createElement("textarea");
+        textarea.value = selected.textContent;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+    }
+})
+
+/* テキストのコピーがクリックされたとき */
+const removeText = document.getElementById("remove-text") as Button
+removeText.addEventListener("click", () => {
+    const contents = document.getElementById("contents") as Listbox
+    let uuid: string
+    if(contents.selectedIndex != -1){
+        const selected = contents.selectedOptions[0]
+        uuid = selected.value
+    }else{
+        return
+    }
+
+    fetch('/cgi-bin?delete=' + uuid)
+        .then((response) => response.json())
+        .then((data) => {
+            // showList(data, files)
+        }
+    )
+    refresh()
 })

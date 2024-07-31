@@ -12,9 +12,20 @@
     <main id="main">
         <!-- <h1 id="title-sora">sora</h1> -->
 
-        <div id="items">
+        <div id="items" class="type-text">
             <fluent-listbox id="contents"></fluent-listbox>
-            <fluent-card id="details"></fluent-card>
+            <fluent-card id="details">
+                <div class="text-details">
+                    <h2 id="text-title"></h2>
+                    <p id="text-content"></p>
+                    <fluent-button id="copy-text"></fluent-button>
+                    <fluent-button id="remove-text" appearance="accent"></fluent-button>
+                </div>
+
+                <div class="file-details">
+                    <fluent-button id="remove-file" appearance="accent"></fluent-button>
+                </div>
+            </fluent-card>
         </div>
         
 
