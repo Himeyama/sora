@@ -1,2 +1,4 @@
 pkg/
 cgi-bin/tmp
+node_modules/
+data/

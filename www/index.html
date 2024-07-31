@@ -4,13 +4,31 @@
 <head>
     <meta charset="utf-8">
     <title>sora</title>
-    <link rel="stylesheet" href="/style">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
     <main id="main">
-        <div id="wrap">
+        <!-- <h1 id="title-sora">sora</h1> -->
+
+        <div id="items">
+            <fluent-listbox id="contents"></fluent-listbox>
+            <fluent-card id="details"></fluent-card>
+        </div>
+        
+
+        <div id="input-content">
+            <fluent-text-field id="input-text"></fluent-text-field>
+            <fluent-button id="select-file"></fluent-button>
+            <fluent-button id="send-data" appearance="accent"></fluent-button>
+        </div>
+
+        <form id="upload-form" hidden>
+            <input placeholder="none" type="file" name="file" id="select-file-button-pre">
+        </form>
+
+        <!-- <div id="wrap">
             <h1 id="title-sora">sora</h1>
             <div class="Grid Text-SendButton">
                 <input id="content" placeholder="Text..." class="TextBox">
@@ -33,9 +51,14 @@
                 <div id="data-list">
                 </div>
             </div>
-        </div>
+
+            <fluent-listbox>
+                <fluent-option value="fn">Foxtrot November</fluent-option>
+            </fluent-listbox>
+        </div>-->
+
     </main>
-    <div id="contextmenu" class="contextmenu">
+    <!-- <div id="contextmenu" class="contextmenu">
         <ul>
             <li id="right-click-copy" class="menu-top">Copy</li>
             <li id="right-click-delete">Delete</li>
@@ -46,7 +69,7 @@
             <li id="right-click-download-file" class="menu-top Hidden">Download</li>
             <li id="right-click-delete-file">Delete</li>
         </ul>
-    </div>
+    </div> -->
     <script src="/js"></script>
 </body>
 

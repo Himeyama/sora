@@ -1,0 +1,54 @@
+body {
+    /* background-color: green; */
+    height: 100vh;
+    margin: 0;
+}
+
+main {
+    padding: 8px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: calc(100% - 16px);
+    gap: 8px;
+}
+
+#items {
+    grid-row: 2 / 3;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    transition: 1s;
+}
+
+#items.visible {
+    gap: 8px;
+}
+
+#items #contents {
+    grid-column: 1 / 2;
+    overflow-x: auto;
+}
+
+#items #details {
+    padding: 0px;
+    width: 0;
+    border: unset;
+    box-shadow: unset;
+}
+
+#items.visible #details {
+    padding: 8px;
+    width: 240px;
+    border: solid 1px #F3F3F3;
+}
+
+#input-content{
+    grid-row: 3 / 4;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 8px;
+}
+
+#contents fluent-option {
+    flex-shrink: 0;
+}

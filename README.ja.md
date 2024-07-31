@@ -46,4 +46,24 @@ IP アドレスは Windows の「設定」から確認可能で、「IPv4 アド
 
 ![get ipv4](docs/get-ipaddr.png)
 
+## 開発
+以下、開発者向けの説明です。
+
+- Windows
+- Ruby 3.2.3
+
+### 依存パッケージのインストール
+```ps1
+bundle install
+```
+
+### アプリの実行 
+```ps1
+bundle exec sora
+```
+
+### Webpack でスクリプトをコンパイル
+```ps1
+rake build:webpack
+```
 

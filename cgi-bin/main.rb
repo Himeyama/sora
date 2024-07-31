@@ -16,6 +16,11 @@ def log(text)
   end
 end
 
+#
+# JSON ファイルを読み込んで配列として返す関数
+# 
+#   text = read_json("data.tmp")
+#
 def read_json(filename)
   unless File.exist? filename
     File.open(filename, "w") do |f|
@@ -29,24 +34,41 @@ def read_json(filename)
   json
 end
 
+#
+# データを取得
+#
+# - データがある場合: データを追加して保存し内容を JSON 形式で表示
+# - データがない場合: 内容を JSON 形式で表示
+#
+# GET: /cgi-bin?data=
+# GET: /cgi-bin?data=12345
+#
 def get_json(params)
   return unless params.key?("data")
 
-  data = params["data"][0]
+  data = params["data"]
   json = read_json(@json_file_path)
-
-  if data != "" && !data.nil?
-    json.append({
-                  content: data,
-                  uuid: SecureRandom.uuid
-                })
-    File.open(@json_file_path, "w") do |f|
-      f.write JSON.pretty_generate(json)
+  
+  if !data.nil?
+    content = data[0]
+    if content != ""
+      json.append({
+                    content: content,
+                    uuid: SecureRandom.uuid
+                  })
+      File.open(@json_file_path, "w") do |f|
+        f.write JSON.pretty_generate(json)
+      end
     end
   end
   print(JSON.pretty_generate(json))
 end
 
+#
+# コンテンツを削除する
+#
+# GET: /cgi-bin?delete=9cba8adc-2f1f-4feb-86dd-e6daf0d26d41
+#
 def delete(params)
   return unless params.key?("delete")
 
