@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sora (24.02.26)
+    sora (24.8.4)
       webrick (~> 1.8)
 
 GEM
