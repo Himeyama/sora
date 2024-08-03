@@ -30,7 +30,7 @@ main {
 }
 
 #items #details {
-    padding: 0px;
+    padding: 0;
     width: 0;
     border: unset;
     box-shadow: unset;
@@ -95,10 +95,6 @@ main {
     margin: 0 4px;
     height: calc(100vh - 217px);
     overflow-y: auto;
-}
-
-#items.type-text #details .text-details #remove-text {
-    grid-row: 3 / 4;
 }
 
 #items.type-text #details .text-details #remove-text {
