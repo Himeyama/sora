@@ -119,3 +119,39 @@ main {
 #progress.hidden-progress {
     visibility: hidden;
 }
+
+@media only screen and (max-width: 768px) {
+    main {
+        display: block;
+    }
+
+    #items {
+        grid-template-columns: unset;
+        /* grid-template-rows: auto auto; */
+        display: block;
+    }
+
+    #items #contents {
+        height: unset;
+        margin-top: 8px;
+        width: calc(100vw - 16px);
+    }
+
+    #items #details {
+        height: 0;
+    }
+
+    #items.visible #details {
+        width: unset;
+        height: auto;
+        margin-top: 8px;
+    }
+
+    #items.type-text #details .text-details #text-content {
+        height: unset;
+    }
+
+    #input-content {
+        margin-top: 8px;
+    }
+}

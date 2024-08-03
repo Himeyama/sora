@@ -66,6 +66,14 @@ i18next.init({
     setText("download-file")
 })
 
+const progress = (isOn: boolean) => {
+    const progressBar = document.getElementById("progress")
+    if(isOn)
+        progressBar.classList.remove("hidden-progress")
+    else
+        progressBar.classList.add("hidden-progress")
+}
+
 // 与えられたオブジェクトのキーと値をエンコードして、HTMLフォームのクエリ文字列として連結
 const encodeHTMLForm = (data: Record<string, string>) => {
     const params: string[] = []
@@ -133,8 +141,10 @@ if(selectFile != null && selectFileButtonPre != null){
             // アップロード正常終了
             console.log('Upload: done')
             getFiles()
+            refresh()
         })
 
+        progress(true)
         xhr.send(formData)
     })
 }
@@ -220,14 +230,6 @@ const refresh = (visibleDetails: boolean = false) => {
 
 refresh()
 
-const progress = (isOn: boolean) => {
-    const progressBar = document.getElementById("progress")
-    if(isOn)
-        progressBar.classList.remove("hidden-progress")
-    else
-        progressBar.classList.add("hidden-progress")
-}
-
 // データ送信
 document.getElementById("send-data").addEventListener("click", () => {
     progress(true)
@@ -289,6 +291,7 @@ removeText.addEventListener("click", () => {
 /* ファイルの削除がクリックされたとき */
 const removeFile = document.getElementById("remove-file") as Button
 removeFile.addEventListener("click", () => {
+    progress(true)
     const contents = document.getElementById("contents") as Listbox
     let fileName: string
     if(contents.selectedIndex != -1){
@@ -301,6 +304,7 @@ removeFile.addEventListener("click", () => {
     fetch('/cgi-bin?removefile=' + fileName)
         .then((response) => response.json())
         .then((_data) => {
+            refresh(true)
         }
     )
     refresh()
