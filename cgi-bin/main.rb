@@ -108,21 +108,35 @@ end
 def remove_file(params)
   return unless params.key?("removefile")
 
-  removefile = params["removefile"][0]
+  removefiles = params["removefile"]
+  if removefiles.size == 0
+    print JSON.pretty_generate({ status: "NG" })
+    return
+  end
+  
+  removefile = removefiles[0]
   response = {
     filename: removefile,
     status: "NG"
   }
 
-  return if [".gitignore", "data.json"].include?(response[:filename])
+  if [".gitignore", "data.json", ""].include?(removefile)
+    print JSON.pretty_generate({status: "NG"})
+    return 
+  end
 
-  file_path = File.join(File.expand_path("../data"), response[:filename])
+  file_path = File.join(File.expand_path("../data"), removefile)
 
   response[:status] = "OK" if File.exist?(file_path) && File.delete(file_path)
 
   print JSON.pretty_generate(response)
 end
 
+#
+# ファイル一覧を取得
+#
+# GET: /cgi-bin?files
+#
 def get_files(params)
   return unless params.key?("files")
 

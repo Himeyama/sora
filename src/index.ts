@@ -1,9 +1,10 @@
 require('./style.css')
-import { fluentListbox, fluentOption, fluentButton, fluentCard, fluentTextField, fluentSwitch, provideFluentDesignSystem, Listbox, TextArea, Button } from '@fluentui/web-components'
+import { fluentProgress, fluentListbox, fluentOption, fluentButton, fluentCard, fluentTextField, fluentSwitch, provideFluentDesignSystem, Listbox, TextArea, Button } from '@fluentui/web-components'
 import i18next from 'i18next'
 
 provideFluentDesignSystem()
     .register(
+        fluentProgress(),
         fluentListbox(),
         fluentOption(),
         fluentButton(),
@@ -34,7 +35,9 @@ i18next.init({
                 "send-data": "Send",
                 "remove-file": "Remove a file",
                 "remove-text": "Remove a text",
-                "copy-text": "Copy a text"
+                "copy-text": "Copy a text",
+                "open-file": "Open a file",
+                "download-file": "Download a file"
             }
         },
         ja: {
@@ -45,7 +48,9 @@ i18next.init({
                 "send-data": "送信",
                 "remove-file": "ファイルの削除",
                 "remove-text": "テキストの削除",
-                "copy-text": "テキストのコピー"
+                "copy-text": "テキストのコピー",
+                "open-file": "ファイルを開く",
+                "download-file": "ファイルのダウンロード"
             }
         }
     }
@@ -57,6 +62,8 @@ i18next.init({
     setText("remove-file")
     setText("remove-text")
     setText("copy-text")
+    setText("open-file")
+    setText("download-file")
 })
 
 // 与えられたオブジェクトのキーと値をエンコードして、HTMLフォームのクエリ文字列として連結
@@ -182,12 +189,15 @@ const showList = (data: any, files: string[]) => {
             items.classList.add("visible")
             items.classList.add("type-file")
             items.classList.remove("type-text")
+
+            const textData = document.getElementById("file-title")
+            textData.textContent = fluentOpt.textContent
         })
         contents.appendChild(fluentOpt)
     }
 }
 
-const refresh = () => {
+const refresh = (visibleDetails: boolean = false) => {
     // 一覧を表示
     fetch('/cgi-bin?data=')
         .then((response) => response.json())
@@ -197,6 +207,11 @@ const refresh = () => {
                 .then((response) => response.json())
                 .then((files) => {
                     showList(data, files)
+                    progress(false)
+                    if(visibleDetails) {
+                        const items = document.getElementById("items")
+                        items.classList.remove("visible")
+                    }
                 }
             )
         }
@@ -205,9 +220,18 @@ const refresh = () => {
 
 refresh()
 
+const progress = (isOn: boolean) => {
+    const progressBar = document.getElementById("progress")
+    if(isOn)
+        progressBar.classList.remove("hidden-progress")
+    else
+        progressBar.classList.add("hidden-progress")
+}
+
 // データ送信
 document.getElementById("send-data").addEventListener("click", () => {
-    const text: string = (document.getElementById("input-text") as HTMLInputElement).value;
+    progress(true)
+    const text: string = (document.getElementById("input-text") as HTMLInputElement).value
     fetch('/cgi-bin?data=' + encodeURI(text))
         .then((response) => response.json())
         .then((data) => {
@@ -216,6 +240,7 @@ document.getElementById("send-data").addEventListener("click", () => {
                 .then((response) => response.json())
                 .then((files) => {
                     showList(data, files)
+                    progress(false)
                 }
             )
         }
@@ -231,18 +256,19 @@ copyText.addEventListener("click", () => {
         const selected = contents.selectedOptions[0]
         selected.textContent
 
-        const textarea: HTMLTextAreaElement = document.createElement("textarea");
-        textarea.value = selected.textContent;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
+        const textarea: HTMLTextAreaElement = document.createElement("textarea")
+        textarea.value = selected.textContent
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand("copy")
+        document.body.removeChild(textarea)
     }
 })
 
-/* テキストのコピーがクリックされたとき */
+/* テキストの削除がクリックされたとき */
 const removeText = document.getElementById("remove-text") as Button
 removeText.addEventListener("click", () => {
+    progress(true)
     const contents = document.getElementById("contents") as Listbox
     let uuid: string
     if(contents.selectedIndex != -1){
@@ -254,9 +280,81 @@ removeText.addEventListener("click", () => {
 
     fetch('/cgi-bin?delete=' + uuid)
         .then((response) => response.json())
-        .then((data) => {
-            // showList(data, files)
+        .then((_data) => {
+            refresh(true)
+        }
+    )
+})
+
+/* ファイルの削除がクリックされたとき */
+const removeFile = document.getElementById("remove-file") as Button
+removeFile.addEventListener("click", () => {
+    const contents = document.getElementById("contents") as Listbox
+    let fileName: string
+    if(contents.selectedIndex != -1){
+        const selected = contents.selectedOptions[0]
+        fileName = selected.textContent
+    }else{
+        return
+    }
+
+    fetch('/cgi-bin?removefile=' + fileName)
+        .then((response) => response.json())
+        .then((_data) => {
         }
     )
     refresh()
 })
+
+const downloadFile = (url: string, filename: string): void => {
+    "use strict"
+
+    // XMLHttpRequestオブジェクトを作成する
+    const xhr: XMLHttpRequest = new XMLHttpRequest()
+    xhr.open("GET", url, true)
+    xhr.responseType = "blob" // Blobオブジェクトとしてダウンロードする
+    xhr.onload = (): void => {
+        // ダウンロード完了後の処理を定義する
+        const blob: Blob = xhr.response
+        // Blobオブジェクトを指すURLオブジェクトを作る
+        const objectURL: string = window.URL.createObjectURL(blob)
+        // リンク（<a>要素）を生成し、JavaScriptからクリックする
+        const link: HTMLAnchorElement = document.createElement("a")
+        document.body.appendChild(link)
+        link.href = objectURL
+        link.download = filename
+        link.click()
+        document.body.removeChild(link)
+    }
+    // XMLHttpRequestオブジェクトの通信を開始する
+    xhr.send()
+}
+
+/* ファイルを開く */
+const openFile = document.getElementById("open-file") as Button
+openFile.addEventListener("click", () => {
+    const contents = document.getElementById("contents") as Listbox
+    let fileName: string
+    if(contents.selectedIndex != -1){
+        const selected = contents.selectedOptions[0]
+        fileName = selected.textContent
+        window.open(`/get?filename=${fileName}`, '_blank')
+    }else{
+        return
+    }
+})
+
+/* ファイルをダウンロード */
+const downloadFileE = document.getElementById("download-file") as Button
+downloadFileE.addEventListener("click", () => {
+    const contents = document.getElementById("contents") as Listbox
+    let fileName: string
+    if(contents.selectedIndex != -1){
+        const selected = contents.selectedOptions[0]
+        fileName = selected.textContent
+        downloadFile(`/get?filename=${fileName}`, fileName)
+    }else{
+        return
+    }
+})
+

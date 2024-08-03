@@ -8,13 +8,12 @@ main {
     padding: 8px;
     display: grid;
     grid-template-rows: auto 1fr auto;
-    height: calc(100% - 16px);
+    height: calc(100% - 19px);
     gap: 8px;
 }
 
 #items {
     grid-row: 2 / 3;
-    overflow-y: auto;
     display: grid;
     grid-template-columns: 1fr auto;
     transition: 1s;
@@ -52,19 +51,31 @@ main {
 
 #items.type-file #details .file-details {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 8px;
     height: 100%;
 }
 
-#items.type-file #details .file-details #remove-file {
+#items.type-file #details .file-details #file-title {
+    grid-row: 1 / 2;
+    margin: 8px 4px 0 4px;
+}
+
+#items.type-file #details .file-details #operation-file {
     grid-row: 3 / 4;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+#items.type-file #details .file-details #remove-file {
+    grid-row: 4 / 5;
 }
 
 /* テキスト */
 #items.type-text #details .text-details {
     display: grid;
-    grid-template-rows: auto 1fr auto auto;
-    height: 100%;
+    grid-template-rows: auto auto auto auto;
     gap: 8px;
 }
 
@@ -75,11 +86,14 @@ main {
     overflow-x: hidden;
     margin: 8px 4px 0 4px;
     user-select: none;
+    height: 36px;
 }
 
 #items.type-text #details .text-details #text-content {
     grid-row: 2 / 3;
     margin: 0 4px;
+    height: calc(100vh - 217px);
+    overflow-y: auto;
 }
 
 #items.type-text #details .text-details #remove-text {
@@ -101,4 +115,10 @@ main {
 
 #contents fluent-option {
     flex-shrink: 0;
+    margin: 2px 4px;
+}
+
+/* 進捗バー */
+#progress.hidden-progress {
+    visibility: hidden;
 }
