@@ -47,13 +47,13 @@ def file
   params = cgi.params
   unless params.key?("filename")
     print cgi.header("application/json")
-    print(JSON.pretty_generate({status: "NG"}))
+    print(JSON.pretty_generate({ status: "NG" }))
     return
   end
 
-  if params["filename"].size == 0
+  if params["filename"].empty?
     print cgi.header("application/json")
-    print(JSON.pretty_generate({status: "NG"}))
+    print(JSON.pretty_generate({ status: "NG" }))
     return
   end
 

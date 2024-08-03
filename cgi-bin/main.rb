@@ -18,7 +18,7 @@ end
 
 #
 # JSON ファイルを読み込んで配列として返す関数
-# 
+#
 #   text = read_json("data.tmp")
 #
 def read_json(filename)
@@ -48,8 +48,8 @@ def get_json(params)
 
   data = params["data"]
   json = read_json(@json_file_path)
-  
-  if !data.nil?
+
+  unless data.nil?
     content = data[0]
     if content != ""
       json.append({
@@ -109,11 +109,11 @@ def remove_file(params)
   return unless params.key?("removefile")
 
   removefiles = params["removefile"]
-  if removefiles.size == 0
+  if removefiles.empty?
     print JSON.pretty_generate({ status: "NG" })
     return
   end
-  
+
   removefile = removefiles[0]
   response = {
     filename: removefile,
@@ -121,8 +121,8 @@ def remove_file(params)
   }
 
   if [".gitignore", "data.json", ""].include?(removefile)
-    print JSON.pretty_generate({status: "NG"})
-    return 
+    print JSON.pretty_generate({ status: "NG" })
+    return
   end
 
   file_path = File.join(File.expand_path("../data"), removefile)
