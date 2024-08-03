@@ -4,49 +4,44 @@
 <head>
     <meta charset="utf-8">
     <title>sora</title>
-    <link rel="stylesheet" href="/style">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
+    <fluent-progress id="progress"></fluent-progress>
     <main id="main">
-        <div id="wrap">
-            <h1 id="title-sora">sora</h1>
-            <div class="Grid Text-SendButton">
-                <input id="content" placeholder="Text..." class="TextBox">
-                <input type="button" id="send-button" value="Send" class="Accent Button SendButton">
-                <input value="Select a File" type="button" id="select-file-button" class="Button">
-                <form id="upload-form" class="Hidden">
-                    <input placeholder="none" type="file" name="file" id="select-file-button-pre">
-                </form>
-            </div>
+        <div id="items" class="">
+            <fluent-listbox id="contents"></fluent-listbox>
+            <fluent-card id="details">
+                <div class="text-details">
+                    <h2 id="text-title"></h2>
+                    <p id="text-content"></p>
+                    <fluent-button id="copy-text"></fluent-button>
+                    <fluent-button id="remove-text" appearance="accent"></fluent-button>
+                </div>
 
-            <div id="file-list-wrap" class="Hidden">
-                <h2 id="file-list-title">Files</h2>
-                <div id="file-list">
-                    <ul id="file-list-ul"></ul>
+                <div class="file-details">
+                    <h2 id="file-title"></h2>
+                    <div id="operation-file">
+                        <fluent-button id="open-file"></fluent-button>
+                        <fluent-button id="download-file"></fluent-button>
+                    </div>
+                    <fluent-button id="remove-file" appearance="accent"></fluent-button>
                 </div>
-            </div>
-            
-            <div id="data-list-wrap" class="Hidden">
-                <h2 id="data-list-title">Texts</h2>
-                <div id="data-list">
-                </div>
-            </div>
+            </fluent-card>
         </div>
+        
+
+        <div id="input-content">
+            <fluent-text-field id="input-text"></fluent-text-field>
+            <fluent-button id="select-file"></fluent-button>
+            <fluent-button id="send-data" appearance="accent"></fluent-button>
+        </div>
+
+        <form id="upload-form" hidden>
+            <input placeholder="none" type="file" name="file" id="select-file-button-pre">
+        </form>
     </main>
-    <div id="contextmenu" class="contextmenu">
-        <ul>
-            <li id="right-click-copy" class="menu-top">Copy</li>
-            <li id="right-click-delete">Delete</li>
-        </ul>
-    </div>
-    <div id="contextmenu-file" class="contextmenu">
-        <ul>
-            <li id="right-click-download-file" class="menu-top Hidden">Download</li>
-            <li id="right-click-delete-file">Delete</li>
-        </ul>
-    </div>
     <script src="/js"></script>
 </body>
 

@@ -37,11 +37,23 @@ def get_content_type(filename)
   content_types[ext] || "text/html"
 end
 
+#
+# ファイルを取得
+#
+# GET: /get?filename=image.png
+#
 def file
   cgi = CGI.new
   params = cgi.params
   unless params.key?("filename")
-    print cgi.header("text/plain")
+    print cgi.header("application/json")
+    print(JSON.pretty_generate({status: "NG"}))
+    return
+  end
+
+  if params["filename"].size == 0
+    print cgi.header("application/json")
+    print(JSON.pretty_generate({status: "NG"}))
     return
   end
 

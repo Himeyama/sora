@@ -1,0 +1,157 @@
+body {
+    /* background-color: green; */
+    height: 100vh;
+    margin: 0;
+}
+
+main {
+    padding: 8px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: calc(100% - 19px);
+    gap: 8px;
+}
+
+#items {
+    grid-row: 2 / 3;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    transition: 1s;
+}
+
+#items.visible {
+    gap: 8px;
+}
+
+#items #contents {
+    grid-column: 1 / 2;
+    overflow-x: auto;
+    height: calc(100vh - 66px);
+}
+
+#items #details {
+    padding: 0;
+    width: 0;
+    border: unset;
+    box-shadow: unset;
+}
+
+#items.visible #details {
+    padding: 8px;
+    width: 480px;
+    border: solid 1px #F3F3F3;
+}
+
+#items.type-text #details .file-details {
+    display: none;
+}
+
+#items.type-file #details .text-details {
+    display: none;
+}
+
+#items.type-file #details .file-details {
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 8px;
+    height: 100%;
+}
+
+#items.type-file #details .file-details #file-title {
+    grid-row: 1 / 2;
+    margin: 8px 4px 0 4px;
+}
+
+#items.type-file #details .file-details #operation-file {
+    grid-row: 3 / 4;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+#items.type-file #details .file-details #remove-file {
+    grid-row: 4 / 5;
+}
+
+/* テキスト */
+#items.type-text #details .text-details {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    gap: 8px;
+}
+
+#items.type-text #details .text-details #text-title {
+    grid-row: 1 / 2;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    margin: 8px 4px 0 4px;
+    user-select: none;
+    height: 36px;
+}
+
+#items.type-text #details .text-details #text-content {
+    grid-row: 2 / 3;
+    margin: 0 4px;
+    height: calc(100vh - 217px);
+    overflow-y: auto;
+}
+
+#items.type-text #details .text-details #remove-text {
+    grid-row: 4 / 5;
+}
+/* ここまで */
+
+
+#input-content{
+    grid-row: 3 / 4;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 8px;
+}
+
+#contents fluent-option {
+    flex-shrink: 0;
+    margin: 2px 4px;
+}
+
+/* 進捗バー */
+#progress.hidden-progress {
+    visibility: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+    main {
+        display: block;
+    }
+
+    #items {
+        grid-template-columns: unset;
+        /* grid-template-rows: auto auto; */
+        display: block;
+    }
+
+    #items #contents {
+        height: unset;
+        margin-top: 8px;
+        width: calc(100vw - 16px);
+    }
+
+    #items #details {
+        height: 0;
+    }
+
+    #items.visible #details {
+        width: unset;
+        height: auto;
+        margin-top: 8px;
+    }
+
+    #items.type-text #details .text-details #text-content {
+        height: unset;
+    }
+
+    #input-content {
+        margin-top: 8px;
+    }
+}
