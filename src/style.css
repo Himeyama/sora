@@ -26,6 +26,7 @@ main {
 #items #contents {
     grid-column: 1 / 2;
     overflow-x: auto;
+    height: calc(100vh - 66px);
 }
 
 #items #details {
