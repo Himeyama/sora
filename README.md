@@ -2,7 +2,7 @@
 [![Ruby](https://github.com/Himeyama/sora/actions/workflows/main.yml/badge.svg)](https://github.com/Himeyama/sora/actions/workflows/main.yml)
 [![Gem Version](https://badge.fury.io/rb/sora.svg)](https://badge.fury.io/rb/sora)
 
-> ![sora](docs/screenshot.png)
+> ![image](https://github.com/user-attachments/assets/17a0364e-4f1c-47cc-bc98-4ee5530de59e)
 
 [日本語の README](/README.ja.md)
 
