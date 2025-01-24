@@ -157,6 +157,10 @@ const removeChild = (element: HTMLElement) => {
     }
 }
 
+const b64ToUtf8 = (str: string): string => {
+    return decodeURIComponent(atob(str));
+}
+
 // リストを更新
 const showList = (data: any, files: string[]) => {
     const contents = document.getElementById("contents")
@@ -164,7 +168,7 @@ const showList = (data: any, files: string[]) => {
 
     // テキスト一覧を追加
     for (const content of data) {
-        const text = content.content
+        const text = b64ToUtf8(content.content)
         const uuid = content.uuid
 
         const fluentOpt = document.createElement("fluent-option")
@@ -230,11 +234,17 @@ const refresh = (visibleDetails: boolean = false) => {
 
 refresh()
 
+
+const utf8ToB64 = (str: string): string => {
+    return btoa(encodeURIComponent(str))
+}
+
 // データ送信
 document.getElementById("send-data").addEventListener("click", () => {
     progress(true)
     const text: string = (document.getElementById("input-text") as HTMLInputElement).value
-    fetch('/cgi-bin?data=' + encodeURI(text))
+    const base64Encoded: string = utf8ToB64(text);
+    fetch('/cgi-bin?data=' + base64Encoded)
         .then((response) => response.json())
         .then((data) => {
             // showList(data)
